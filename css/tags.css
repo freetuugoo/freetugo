@@ -1,0 +1,32 @@
+.tags-input {
+    background-color: #fff;
+    display: inline-block
+}
+.tags-input .tag {
+    border: 1px solid #d8d8d8;
+    padding: 8px 17px 8px 17px;
+    margin: 0.5em 0.1em;
+    display: inline-block;
+    background-color: #fff;
+    border-radius: 30px;
+    transition: all 0.1s linear;
+    cursor: pointer;
+}
+.tags-input .tag:hover {
+    background-color: #0095DA;
+    color: #fff;
+}
+.tags-input .tag .close::after {
+    content: 'x';
+    font-weight: bold;
+    display: inline-block;
+    transform: scale(0.7);
+    margin-left: 0.25em;
+}
+.tags-input .main-input {
+    border: 0;
+    outline: 0;
+}
+.close {
+    margin-top: -1px;
+}

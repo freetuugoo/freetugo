@@ -4,9 +4,9 @@ include_once('classes/login_class.php');
 ?>
 
 <div class="container section" style="padding-top:0px; padding-bottom:0px;">
-    <h2>Latest Itineraries</h2>
     <div class="car-slideshow image-carousel style2 box" data-animation="slide" data-item-width="270" data-item-margin="30">
-        <div class="gallery-filter box">
+        <div class="gallery-filter box" style="margin-bottom: 5px;">
+            <span style="font-size: 1.6667em; font-weight: normal; color: #2d3e52; margin-right: 10px;">Latest Itinerary</span>
             <a href="#" class="button btn-medium active" data-filter="filter-all" style="border-radius:30px;">All</a>
             <a href="#" class="button btn-medium" data-filter="filter-beach" style="border-radius:30px;">Beach</a>
             <a href="#" class="button btn-medium" data-filter="filter-mountain" style="border-radius:30px;">Mountain</a>
@@ -40,6 +40,8 @@ include_once('classes/login_class.php');
                         } else {
                             $redirect = "itinerary_user.php?id=$id&des=$destination&arrive=$arrive&depart=$depart&day=$dayCount&ppl=$personCount&name=$name";
                         }
+                    } else {
+                        $redirect = "itinerary_user.php?id=$id&des=$destination&arrive=$arrive&depart=$depart&day=$dayCount&ppl=$personCount&name=$name";
                     }
 
                     echo "
@@ -50,7 +52,7 @@ include_once('classes/login_class.php');
                             </figure>
                             <div class='details'>
                                 <span class='price'><img src='images/goldcoin.png' style='width:20px;'></span>
-                                <h4 class='box-title'>$name<small>$destination</small></h4>
+                                <h4 class='box-title' style='height:50px;'>$name<small>$destination</small></h4>
                                 <div class='amenities'>
                                     <ul>
                                         <li><i class='soap-icon-user circle'></i>$personCount</li>

@@ -89,8 +89,6 @@ elseif (isset($_POST['submitPlan'])) {
 
 
 <head>
-    <!-- <meta http-equiv="refresh" content="0; url=<?php echo $page ?>"> -->
-
     <!-- Page Title -->
     <title>fritugo - get unlimited, create your own dream itinerary for your future trip</title>
     <?php

@@ -228,7 +228,9 @@ $userid = DB::query(
                                                     }
 
                                                     if (isset($_POST['edit-iti'])) {
-                                                        echo "<script>redirect('itinerary_detail.php?des=$des&arrive=$dayArrive&depart=$dayDepart&day=$dayCount&ppl=$peopleCount&name=$name')</script>";
+                                                        $dayDiff = date_diff($dayArrive, $dayDepart);
+                                                        $dayCount = $dayDiff->format('%a') + 1;
+                                                        echo "<script>redirect('itinerary_detail.php?des=$des&arrive=$arrive&depart=$depart&day=$dayCount&ppl=$personCount&name=$name')</script>";
                                                     }
                                                 ?>
                                             <a href="#travelo-login" class="soap-popupbox"><img src="images/download_icon.png" style="width:6%; padding-right:5px;"></a>&nbsp&nbsp

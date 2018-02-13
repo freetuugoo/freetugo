@@ -1,6 +1,6 @@
 <!-- javascript redirect -->
 <script>
-    function redirect() {
+    function redirect(target) {
         window.location.replace(target);
     }
 </script>
@@ -16,7 +16,7 @@ $dDepart = $_GET['depart'];
 $day = $_GET['day'];
 $ppl = $_GET['ppl'];
 $name = $_GET['name'];
-$id= $_GET['id'];
+
 ?>
 <!DOCTYPE html>
 <!--[if IE 8]>          <html class="ie ie8"> <![endif]-->
@@ -92,9 +92,13 @@ $id= $_GET['id'];
                                         <form action="" method="post">
                                             <?php
                                                 if (Login::isLoggedIn()) {
-                                                    echo "<button onclick='redirect('target')' type='submit' name='seefull' class='full-width btn-medium' style='border-radius:30px; background-color:#0095da; font-size:13px;'>see full itinerary</button>";
+                                                    echo "<button onclick='redirect(target)' type='submit' name='seefull' class='full-width btn-medium' style='border-radius:30px; background-color:#0095da; font-size:13px;'>see full itinerary</button>";
                                                 } else {
                                                     echo "<a href='#travelo-signup' class='soap-popupbox'><button type='submit' name='seefull' class='full-width btn-medium' style='border-radius:30px; background-color:#0095da; font-size:13px;'>see full itinerary</button></a>";
+                                                }
+
+                                                if(isset($_POST['seefull'])) {
+                                                    echo "<script>redirect('itinerary_detail.php?des=$des&arrive=$dArrive&depart=$dDepart&day=$day&$ppl=$ppl&name=$name')</script>";
                                                 }
                                             ?>
                                         </form>

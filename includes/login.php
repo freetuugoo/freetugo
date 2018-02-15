@@ -3,6 +3,14 @@
         window.location.replace(target);
     }
 </script>
+<head>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <style>
+        .swal-button{
+            padding: 0px 24px;
+        }
+    </style>
+</head>
 
 <?php
 include_once('./db.php');
@@ -11,12 +19,18 @@ if(isset($_POST['login'])) {
     $password = $_POST['password'];
 
     if($_POST['username'] == "" || $_POST['password'] == "") {
-        echo "<script type=text/javascript>alert('Both username and password musn't be empty')</script>";
-        echo "<script>redirect('index.php');</script>";
+        echo "<script>
+            swal({
+                title: 'Fail to Login!',
+                text: 'Both username and password must be filled',
+                icon: 'error',
+                closeOnClickOutside: false
+            })
+        </script>";
+
     } else {
         if (DB::query('SELECT username FROM users WHERE username=:username', array(':username'=>$username))) {
             if (password_verify($password, DB::query('SELECT pass FROM users WHERE username=:username', array(':username'=>$username))[0]['pass'])) {
-                    echo "<script type=text/javascript>alert('Logged in!')</script>";
                     $cstrong = TRUE;
                     $token = bin2hex(openssl_random_pseudo_bytes(64, $cstrong));
                     $user_id = DB::query('SELECT id FROM users WHERE username=:username', array(':username'=>$username))[0]['id'];
@@ -24,17 +38,50 @@ if(isset($_POST['login'])) {
     
                     setcookie("FCID", $token, time() + 60 * 60 * 24 * 7, "/", NULL, NULL, TRUE);
                     setcookie("FCID_", '1', time() + 60 * 60 * 24 * 3, "/", NULL, NULL, TRUE);
-                    echo "<script>redirect('dashboard.php');</script>";
+                    echo "<script>
+                        swal({
+                            title: 'Success!',
+                            text: 'Logging In',
+                            icon: 'success',
+                            closeOnClickOutside: false
+                        }).then(function() {
+                            window.location = 'dashboard.php';
+                        })
+                    </script>";
             } else {
-                    echo "<script type=text/javascript>alert('Incorrect password !!')</script>";
+                echo "<script>
+                        swal({
+                            title: 'Fail to Login!',
+                            text: 'Incorrect password',
+                            icon: 'error',
+                            closeOnClickOutside: false
+                        })
+                </script>";
             }
         } else {
-            echo "<script type=text/javascript>alert('User not registered !!')</script>";
+            echo "<script>
+                swal({
+                    title: 'Fail to Login!',
+                    text: 'User not registered',
+                    icon: 'error',
+                    closeOnClickOutside: false
+                })
+            </script>";
         }
     }
 }
+
 ?>
 <div id="travelo-login" class="travelo-login-box travelo-box" style="width:870px; padding:0px;">
+
+    <div id="dialogoverlay"></div>
+    <div id="dialogbox">
+        <div>
+            <div id="dialogboxbody"></div>
+            <div id="dialogboxfoot"></div>
+        </div>
+    </div>
+
     <table>
         <tr>
             <td>

@@ -134,7 +134,7 @@ $image = DB::query('SELECT image FROM user_images WHERE user_id=:user_id AND def
                                     JOIN users u ON u.id = i.user_id
                                     WHERE u.username = :username', array(':username'=>$username)
                                     )[0]['COUNT(i.user_id)'];
-                                if ($itineraryCount == 1) {
+                                if ($itineraryCount <= 1) {
                                     echo $itineraryCount . " itinerary";
                                 } else {
                                     echo $itineraryCount . " itineraries";

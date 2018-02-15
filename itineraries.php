@@ -66,7 +66,7 @@ include_once('./classes/login_class.php');
                             $allIti = DB::query(
                                 'SELECT id, destination, day_arrive, day_depart, day_count, person_count, user_id, name
                                 FROM itineraries
-                                ORDER BY id'
+                                ORDER BY id DESC'
                             );
                         foreach($allIti as $key => $val) {
                             $id = $val['id'];

@@ -3,6 +3,14 @@
         window.location.replace(target);
     }
 </script>
+<head>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <style>
+        .swal-button{
+            padding: 0px 24px;
+        }
+    </style>
+</head>
 
 <?php
     include_once('./db.php');
@@ -21,9 +29,31 @@
                             if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
                                 if(!DB::query('SELECT email FROM users WHERE email=:email', array(':email'=>$email))) {
                                     DB::query('INSERT INTO users VALUES (\'\', :username, :email, :pass, \'\', \'\')', array(':username'=>$username, ':email'=>$email, ':pass'=>password_hash($password, PASSWORD_BCRYPT)));
-                                    echo "<script type=text/javascript>alert('Signup Success')</script>";
                                     if ($url === "http://localhost/fritugo/index.php" || $url === "http://localhost/fritugo/itineraries.php" || $url === "http://localhost/fritugo/discovery.php") {
-                                        
+                                        if (DB::query('SELECT username FROM users WHERE username=:username', array(':username'=>$username))) {
+                                            if (password_verify($password, DB::query('SELECT pass FROM users WHERE username=:username', array(':username'=>$username))[0]['pass'])) {
+                                                    $cstrong = TRUE;
+                                                    $token = bin2hex(openssl_random_pseudo_bytes(64, $cstrong));
+                                                    $user_id = DB::query('SELECT id FROM users WHERE username=:username', array(':username'=>$username))[0]['id'];
+                                                    DB::query('INSERT INTO login_tokens VALUES (\'\', :token, :user_id)', array(':token'=>sha1($token), ':user_id'=>$user_id));
+                                                    setcookie("FCID", $token, time() + 60 * 60 * 24 * 7, "/", NULL, NULL, TRUE);
+                                                    setcookie("FCID_", '1', time() + 60 * 60 * 24 * 3, "/", NULL, NULL, TRUE);
+                                                    echo "<script>
+                                                        swal({
+                                                            title: 'Successfully created new account!',
+                                                            text: 'Logging In',
+                                                            icon: 'success',
+                                                            closeOnClickOutside: false
+                                                        }).then(function() {
+                                                            window.location = 'dashboard.php';
+                                                        })
+                                                    </script>";
+                                            } else {
+                                                    echo "<script type=text/javascript>alert('Incorrect password !!')</script>";
+                                            }
+                                        } else {
+                                            echo "<script type=text/javascript>alert('User not registered !!')</script>";
+                                        }
                                     } else {
                                         $des = $_GET['des'];
                                         $arrive = $_GET['arrive'];
@@ -33,14 +63,28 @@
 
                                         if (DB::query('SELECT username FROM users WHERE username=:username', array(':username'=>$username))) {
                                             if (password_verify($password, DB::query('SELECT pass FROM users WHERE username=:username', array(':username'=>$username))[0]['pass'])) {
-                                                    echo "<script type=text/javascript>alert('Logged in!')</script>";
                                                     $cstrong = TRUE;
                                                     $token = bin2hex(openssl_random_pseudo_bytes(64, $cstrong));
                                                     $user_id = DB::query('SELECT id FROM users WHERE username=:username', array(':username'=>$username))[0]['id'];
                                                     DB::query('INSERT INTO login_tokens VALUES (\'\', :token, :user_id)', array(':token'=>sha1($token), ':user_id'=>$user_id));
                                                     setcookie("FCID", $token, time() + 60 * 60 * 24 * 7, "/", NULL, NULL, TRUE);
                                                     setcookie("FCID_", '1', time() + 60 * 60 * 24 * 3, "/", NULL, NULL, TRUE);
-                                                    echo "<script>redirect('itinerary_detail.php?des=$des&arrive=$arrive&depart=$depart&day=$day&ppl=$ppl&name=$name')</script>";
+                                                    echo "<script>
+                                                        swal({
+                                                            title: 'Successfully created new account!',
+                                                            text: 'Logging In',
+                                                            icon: 'success',
+                                                            closeOnClickOutside: false
+                                                        }).then(function(){
+                                                            swal({
+                                                                title: 'Successfully created a new itinerary',
+                                                                icon: 'success',
+                                                                closeOnClickOutside: false
+                                                            }).then(function() {
+                                                                window.location = 'itinerary_detail.php?des=$des&arrive=$arrive&depart=$depart&day=$day&ppl=$ppl&name=$name';
+                                                            });
+                                                        });
+                                                    </script>";
                                             } else {
                                                     echo "<script type=text/javascript>alert('Incorrect password !!')</script>";
                                             }
@@ -50,22 +94,70 @@
                                         
                                     }
                                 } else {
-                                    echo "<script type=text/javascript>alert('Email already exist')</script>";
+                                    // echo "<script type=text/javascript>alert('Email already exist')</script>";
+                                    echo "<script>
+                                        swal({
+                                            title: 'Fail to Signup!',
+                                            text: 'Email already exist',
+                                            icon: 'error',
+                                            closeOnClickOutside: false
+                                        })
+                                    </script>";
                                 }
                             } else {
-                                    echo "<script type=text/javascript>alert('Invalid email')</script>";
+                                // echo "<script type=text/javascript>alert('Invalid email')</script>";
+                                echo "<script>
+                                    swal({
+                                        title: 'Fail to Signup!',
+                                        text: 'Invalid email',
+                                        icon: 'error',
+                                        closeOnClickOutside: false
+                                    })
+                                </script>";
                             }
                     } else {
-                            echo "<script type=text/javascript>alert('Use a valid password between 6 and 60 characters')</script>";
+                        // echo "<script type=text/javascript>alert('Use a valid password between 6 and 60 characters')</script>";
+                        echo "<script>
+                            swal({
+                                title: 'Fail to Signup!',
+                                text: 'Please use a valid password between 6 and 60 characters',
+                                icon: 'error',
+                                closeOnClickOutside: false
+                            })
+                        </script>";
                     }
                     } else {
-                            echo "<script type=text/javascript>alert('Invalid username')</script>";
+                        // echo "<script type=text/javascript>alert('Invalid username')</script>";
+                        echo "<script>
+                            swal({
+                                title: 'Fail to Signup!',
+                                text: 'Invalid username',
+                                icon: 'error',
+                                closeOnClickOutside: false
+                            })
+                        </script>";
                     }
             } else {
-                    echo "<script type=text/javascript>alert('Use a valid username between 3 and 32 characters')</script>";
+                // echo "<script type=text/javascript>alert('Use a valid username between 3 and 32 characters')</script>";
+                echo "<script>
+                    swal({
+                        title: 'Fail to Signup!',
+                        text: 'Please use a valid username between 3 and 32 characters',
+                        icon: 'error',
+                        closeOnClickOutside: false
+                    })
+                </script>";
             }
     } else {
-            echo "<script type=text/javascript>alert('Username already exist')</script>";
+        // echo "<script type=text/javascript>alert('Username already exist')</script>";
+        echo "<script>
+            swal({
+                title: 'Fail to Signup!',
+                text: 'Username already exist',
+                icon: 'error',
+                closeOnClickOutside: false
+            })
+        </script>";
     }
     }
 ?>

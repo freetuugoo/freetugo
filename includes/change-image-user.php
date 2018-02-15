@@ -19,8 +19,15 @@ if (isset($_POST['img_update'])) {
         SET image=:image
         WHERE user_id=:user_id', array(':image'=>$filepath,':user_id'=>$user_id)
         );
-    echo "<script>alert('Successfully updated profile image')</script>";
-    echo "<script>redirect('dashboard.php')</script>";
+    echo "<script>
+        swal({
+            title: 'Successfully updated your image',
+            icon: 'success',
+            closeOnClickOutside: false
+        }).then(function() {
+            window.location = 'dashboard.php';
+        })
+    </script>";
 }
 ?>
 

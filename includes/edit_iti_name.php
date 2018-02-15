@@ -13,11 +13,15 @@ $url = "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 
 if(isset($_POST['name-btn'])) {
     $newName = $_POST['iti-name'];
-    DB::query(
-        'UPDATE itineraries
-        SET name=:name
-        WHERE id=:id', array(':id'=>$id, ':name'=>$newName)
-        );
+    if(empty($newName)) {
+
+    } else {
+        DB::query(
+            'UPDATE itineraries
+            SET name=:name
+            WHERE id=:id', array(':id'=>$id, ':name'=>$newName)
+            );
+    }
 }
 ?>
 <div id="edit_iti_name" class="travelo-signup-box travelo-box">

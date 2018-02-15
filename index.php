@@ -48,7 +48,6 @@ if (Login::isLoggedIn()) {
             echo "<script>redirect('index.php')</script>";
         } else {
                 DB::query('INSERT INTO itineraries VALUES (\'\', :destination, :day_arrive, :day_depart, :day_count, :person_count, :user_id, :name)', array(':destination'=>$destination, ':day_arrive'=>$dayArrive, ':day_depart'=>$dayDepart, ':day_count'=>$dayCount, ':person_count'=>$personCount, ':user_id'=>$user_id, ':name'=>$name));
-                echo "<script type=text/javascript>alert('Success')</script>";
                 echo "<script>redirect('itinerary_result.php?des=$destination&arrive=$dayArrive&depart=$dayDepart&day=$dayCount&ppl=$personCount&name=$name')</script>";
         }
     }
@@ -288,8 +287,8 @@ body.highlight-is-active {
                                     <form name="form" id="msform" action="" method="post" style="positition:abosolute;">
                                         <fieldset>
                                                 <!-- <span class="tag">beach<span class="close"></span></span> -->
-                                                <input style="width:79%; border-top-left-radius:30px; border-bottom-left-radius:30px" type="text" name="destination" id="location-input" placeholder="Your destination" />
-                                                <input id="next" style="width:19%; border-top-right-radius:30px; border-bottom-right-radius:30px; margin-left:-3px;background-color:#ffb400; color:#fff;" type="button" name="next" class="next" value="Next" />
+                                                <input style="width:79%; border-top-left-radius:30px; border-bottom-left-radius:30px" type="text" name="destination" id="location-input" placeholder="Type in your destination and choose your interest" />
+                                                <input id="next" style="width:19%; border-top-right-radius:30px; border-bottom-right-radius:30px; margin-left:-4px;background-color:#ffb400; color:#fff;" type="button" name="next" class="next" value="Next" />
                                                 <button id="onHL" type="button">Highlight tag</button>
                                         </fieldset>
                                         <fieldset>

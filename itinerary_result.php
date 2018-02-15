@@ -98,7 +98,15 @@ $name = $_GET['name'];
                                                 }
 
                                                 if(isset($_POST['seefull'])) {
-                                                    echo "<script>redirect('itinerary_detail.php?des=$des&arrive=$dArrive&depart=$dDepart&day=$day&$ppl=$ppl&name=$name')</script>";
+                                                    echo "<script>
+                                                        swal({
+                                                            title: 'Successfully created a new itinerary',
+                                                            icon: 'success',
+                                                            closeOnClickOutside: false
+                                                        }).then(function() {
+                                                            window.location = 'itinerary_detail.php?des=$des&arrive=$arrive&depart=$depart&day=$day&ppl=$ppl&name=$name';
+                                                        });
+                                                    </script>";
                                                 }
                                             ?>
                                         </form>
@@ -109,7 +117,7 @@ $name = $_GET['name'];
                                     </td>
                                     <td style="color:#636363; font-size:13px; font-weight:500; padding: 10px 10px 0px 10px; text-align:right;">
                                         <a href="#travelo-login" class="soap-popupbox"><img src="images/download_icon.png" style="width:7%; padding-right:5px;">download</a>&nbsp&nbsp&nbsp
-                                        <a href="#travelo-login" class="soap-popupbox"><img src="images/print_icon.png" style="width:7%; padding-right:5px;">print</a>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                                        <a href="#travelo-login" class="soap-popupbox"><img src="images/print_icon.png" style="width:7%; padding-right:5px;">print</a>&nbsp&nbsp&nbsp&nbsp
                                         <a href="#travelo-login" class="soap-popupbox soap-icon-facebook circle" style="border: 1px solid #3b5998; background-color:#3b5998; color:#fff; "></a>&nbsp&nbsp&nbsp
                                         <a href="#travelo-login" class="soap-popupbox soap-icon-twitter circle" style="border: 1px solid #00aced; background-color:#00aced; color:#fff;"></a>&nbsp&nbsp&nbsp
                                         <a href="#travelo-login" class="soap-popupbox soap-icon-googleplus circle" style="border: 1px solid #d34836; background-color:#d34836; color:#fff;"></a>&nbsp&nbsp&nbsp

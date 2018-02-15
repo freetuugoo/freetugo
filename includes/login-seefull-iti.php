@@ -19,24 +19,58 @@ if(isset($_POST['login-seefull'])) {
     $password = $_POST['password'];
 
     if($_POST['username'] == "" || $_POST['password'] == "") {
-        echo "<script type=text/javascript>alert('Both username and password musn't be empty')</script>";
-        echo "<script>redirect('$url');</script>";
+        echo "<script>
+            swal({
+                title: 'Fail to Login!',
+                text: 'Both username and password must be filled',
+                icon: 'error',
+                closeOnClickOutside: false
+            })
+        </script>";
     } else {
         if (DB::query('SELECT username FROM users WHERE username=:username', array(':username'=>$username))) {
             if (password_verify($password, DB::query('SELECT pass FROM users WHERE username=:username', array(':username'=>$username))[0]['pass'])) {
-                    echo "<script type=text/javascript>alert('Logged in!')</script>";
                     $cstrong = TRUE;
                     $token = bin2hex(openssl_random_pseudo_bytes(64, $cstrong));
                     $user_id = DB::query('SELECT id FROM users WHERE username=:username', array(':username'=>$username))[0]['id'];
                     DB::query('INSERT INTO login_tokens VALUES (\'\', :token, :user_id)', array(':token'=>sha1($token), ':user_id'=>$user_id));
                     setcookie("FCID", $token, time() + 60 * 60 * 24 * 7, "/", NULL, NULL, TRUE);
                     setcookie("FCID_", '1', time() + 60 * 60 * 24 * 3, "/", NULL, NULL, TRUE);
-                    echo "<script>redirect('itinerary_detail.php?des=$des&arrive=$arrive&depart=$depart&day=$day&ppl=$ppl&name=$name')</script>";
+                    echo "<script>
+                        swal({
+                            title: 'Success!',
+                            text: 'Logging In',
+                            icon: 'success',
+                            closeOnClickOutside: false
+                        }).then(function(){
+                            swal({
+                                title: 'Successfully created a new itinerary',
+                                icon: 'success',
+                                closeOnClickOutside: false
+                            }).then(function() {
+                                window.location = 'itinerary_detail.php?des=$des&arrive=$arrive&depart=$depart&day=$day&ppl=$ppl&name=$name';
+                            })
+                        })
+                    </script>";
             } else {
-                    echo "<script type=text/javascript>alert('Incorrect password !!')</script>";
+                echo "<script>
+                    swal({
+                        title: 'Fail to Login!',
+                        text: 'Incorrect password',
+                        icon: 'error',
+                        closeOnClickOutside: false
+                    })
+                </script>";
             }
         } else {
-            echo "<script type=text/javascript>alert('User not registered !!')</script>";
+            echo "<script>
+                swal({
+                    title: 'Fail to Login!',
+                    text: 'User not registered',
+                    icon: 'error',
+                    closeOnClickOutside: false
+                })
+            </script>";
         }
     }
 }

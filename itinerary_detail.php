@@ -1,3 +1,5 @@
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 <?php
 include_once('./db.php');
 include_once('./classes/login_class.php');
@@ -13,12 +15,17 @@ if(!DB::query('SELECT id FROM itineraries WHERE destination=:destination AND use
     $ppl = $_GET['ppl'];
     $name = $_GET['name'];
     DB::query('INSERT INTO itineraries VALUES (\'\', :destination, :day_arrive, :day_depart, :day_count, :person_count, :user_id, :name)', array(':destination'=>$des, ':day_arrive'=>$dArrive, ':day_depart'=>$dDepart, ':day_count'=>$day, ':person_count'=>$ppl, ':user_id'=>$user_id, ':name'=>$name));
-    echo "<script type=text/javascript>alert('Success')</script>";
-    echo "<script>redirect('$url')</script>";
-} else {
-    // echo "<script type=text/javascript>alert('Cannot input same destination from your itineraries')</script>";
 }
-
+echo "<script>
+        swal({
+            title: 'Success!',
+            text: 'Successfully created a new itinerary',
+            icon: 'success',
+            closeOnClickOutside: false
+        }).then(function() {
+            window.location = $url;
+        })
+</script>";
 $id = "";
 if(empty($_GET['id'])) {
     $id = DB::query('SELECT id FROM itineraries WHERE destination=:destination AND user_id=:user_id ORDER BY id DESC', array(':destination'=>$des, ':user_id'=>$user_id))[0]['id'];
@@ -50,6 +57,10 @@ if(empty($_GET['id'])) {
     </script>
 
     <style>
+        .swal-button{
+            padding: 0px 24px;
+        }
+
 .dropbtn {
     background-color: #0095da;
     color: white;
@@ -90,54 +101,6 @@ if(empty($_GET['id'])) {
 .dropdown:hover .dropbtn {
     background-color: #0095da;
 }
-.overlay {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: rgba(0, 0, 0, 0.7);
-    transition: opacity 500ms;
-    visibility: hidden;
-    opacity: 0;
-  }
-
-  .overlay:target {
-    visibility: visible;
-    opacity: 1;
-  }
-  
-  .popup {
-    margin: 200px auto;
-    padding: 20px;
-    background: white;
-    opacity: 0.8;
-    border-radius: 5px;
-    width: 30%;
-    position: relative;
-    transition: all 5s ease-in-out;
-    font-family: Tahoma, Arial, sans-serif;
-  }
-  .popup .close {
-    position: absolute;
-    top: 15px;
-    right: 30px;
-    transition: all 200ms;
-    font-size: 30px;
-    font-weight: bold;
-    text-decoration: none;
-    color: black;
-  }
-  .popup-content{
-      color: black;
-  }
-  .popup-content a{
-    text-decoration: none;
-    color: black;
-}
-  .popup .close:hover {
-    color: white;
-  }
 </style>
 
 </head>
@@ -280,9 +243,17 @@ if(empty($_GET['id'])) {
                                 </tr>
                                 <tr>
                                     <td colspan="4" style="line-height:normal; margin-top:1px; color:#636363; font-size:14px; padding: 10px 10px 0px 0px; text-align:justify; height:10px;">
-                                        This pre-planned 3 days Rome itinerary will allow you to explore Rome's must-sees, landmarks, museums and attractions. See how you can make the best out of a 3 days stay in Rome as you make your way through the Sistine Chapel with its world famous ceiling fresco, the Vatican Museums, the Colosseum and all other Rome's attractions - religious and imperial. 
-                                            <br><br>
-                                        If you are planning a 3 days visit to Rome and are interested to visit its top attractions then this plan may well suit your needs.&nbsp<a href="#"><img src="images/pencil.png" style="width:1.7%;"></a></td>
+                                        <?php
+                                        $dayCount = DB::query(
+                                            'SELECT day_count
+                                            FROM itineraries
+                                            WHERE id=:id', array(':id'=>$id)
+                                            )[0]['day_count'];
+                                         echo "This pre-planned $dayCount days $des itinerary will allow you to explore all must-sees, landmarks, and attractions. See how you can make the best out of a $dayCount days stay in $des. 
+                                                    <br><br>
+                                                If you are planning a $dayCount days visit to $des and are interested to visit its top attractions then this plan may well suit your needs.&nbsp<a href='#'><img src='images/pencil.png' style='width:1.7%;'></a>";
+                                        ?>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td width="150px"></td>

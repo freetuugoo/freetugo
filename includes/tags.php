@@ -15,7 +15,7 @@
 
         <div style="border-style: solid; border:1px; border-color:#222; padding: 30px 20px 30px 30px; text-align:center; ">
 
-            <a style="font-size:18px; ">what do you wanna see?</a>
+            <a style="font-size:18px; ">choose your interest</a>
 
         </div>
 

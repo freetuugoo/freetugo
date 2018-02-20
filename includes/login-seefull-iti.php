@@ -38,7 +38,7 @@ if(isset($_POST['login-seefull'])) {
                     setcookie("FCID_", '1', time() + 60 * 60 * 24 * 3, "/", NULL, NULL, TRUE);
                     echo "<script>
                         swal({
-                            title: 'Success!',
+                            title: 'Success!',S
                             text: 'Logging In',
                             icon: 'success',
                             closeOnClickOutside: false
@@ -49,8 +49,8 @@ if(isset($_POST['login-seefull'])) {
                                 closeOnClickOutside: false
                             }).then(function() {
                                 window.location = 'itinerary_detail.php?des=$des&arrive=$arrive&depart=$depart&day=$day&ppl=$ppl&name=$name';
-                            })
-                        })
+                            });
+                        });
                     </script>";
             } else {
                 echo "<script>

@@ -6,8 +6,8 @@
 <?php
 include_once('./db.php');
 include_once('./classes/login_class.php');
-$user_id = DB::query('SELECT user_id FROM login_tokens WHERE token=:token', array(':token'=>sha1($_COOKIE['FCID'])))[0]['user_id'];
-
+// $user_id = DB::query('SELECT user_id FROM login_tokens WHERE token=:token', array(':token'=>sha1($_COOKIE['FCID'])))[0]['user_id'];
+$user_id="71";
 if (isset($_POST['img_update'])) {   
     $filetmp = $_FILES['file_img']['tmp_name'];
     $filename = $_FILES['file_img']['name'];

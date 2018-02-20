@@ -10,9 +10,9 @@ array_push($allArray, $allDes);
 
 if(!DB::query('SELECT image FROM user_images WHERE user_id=:user_id AND default_image=:default_image', array(':user_id'=>$user_id, ':default_image'=>'1'))) {
     DB::query('INSERT INTO user_images VALUES (\'\', :user_id, :image, :default_image)', array(':user_id'=>$user_id, ':image'=>'images/user_image/default-profile-image.jpg', ':default_image'=>'1'));
+} else {
+    $image = DB::query('SELECT image FROM user_images WHERE user_id=:user_id AND default_image=:default_image', array(':user_id'=>$user_id, ':default_image'=>'1'))[0]['image'];
 }
-
-$image = DB::query('SELECT image FROM user_images WHERE user_id=:user_id AND default_image=:default_image', array(':user_id'=>$user_id, ':default_image'=>'1'))[0]['image'];
 ?>
 
 <!DOCTYPE html>
@@ -82,7 +82,7 @@ $image = DB::query('SELECT image FROM user_images WHERE user_id=:user_id AND def
                                     JOIN login_tokens lt ON lt.user_id = u.id
                                     WHERE lt.token = :token', array(':token'=>sha1($_COOKIE['FCID']))
                                     )[0]['username'];
-                                echo '@'.$username;
+                                echo '@'. $username;
                             }
                         ?>
                     </a>

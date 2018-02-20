@@ -14,6 +14,17 @@
 
 <?php
 include_once('./db.php');
+require_once "fb-config.php";
+require_once "g-config.php";
+
+//Facebook Login
+$redirectURL = "http://localhost/fritugo/includes/fb-callback.php";
+$permissions = ['email'];
+$loginURL = $helper->getLoginUrl($redirectURL, $permissions);
+
+//Google Login
+$gLoginURL = $gClient->createAuthUrl();
+
 if(isset($_POST['login'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
@@ -92,9 +103,9 @@ if(isset($_POST['login'])) {
             <td style="padding-right:50px;">
                 <div class="login-social"><p style="font-size:25px; color: #000; font-weight:700; text-align:center; line-height:1px; padding-top:30px;">Good to see you again!</p><br>
                     <p style="font-size:14px; color: #000; font-weight:400; text-align:center;">Log in and explore all the <br>new itineraries we found for you</p><br>
-                
-                    <a href="./dashboard.php" class="button login-facebook"  style="border-radius:30px; padding: 5px 30px 40px 30px;"><i class="soap-icon-facebook"></i>Log in with Facebook</a>
-                    <a href="./dashboard.php" class="button login-googleplus"  style="border-radius:30px; padding: 5px 30px 40px 30px;"><i class="soap-icon-googleplus"></i>Log in with Google+</a>
+                    <button onclick="redirect('<?php echo $loginURL ?>')" type="button" class="button login-facebook"  style="border-radius:30px; padding: 5px 30px 40px 30px;"><i class="soap-icon-facebook"></i>Log in with Facebook</button>
+                    <!-- class="button login-googleplus" style="border-radius:30px; padding: 5px 30px 40px 30px;"<i class="soap-icon-googleplus"></i> -->
+                    <button onclick="redirect('<?php echo $gLoginURL ?>')" type="button" class="button login-googleplus" style="border-radius:30px; padding: 5px 30px 40px 30px;"><i class="soap-icon-googleplus"></i>Log in with Google+</button>
                 </div>
                 <div class="seperator"><label>OR</label></div>
                 <form action="" method="post">
